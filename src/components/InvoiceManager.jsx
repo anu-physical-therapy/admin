@@ -20,6 +20,12 @@ const InvoiceManager = ({ savedInvoices, savedData, onDeleteInvoice, onViewInvoi
   const [sortBy, setSortBy] = useState('date')
   const [sortOrder, setSortOrder] = useState('desc')
 
+  const isRecent = (date) => {
+    const thirtyDaysAgo = new Date()
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
+    return new Date(date) > thirtyDaysAgo
+  }
+
   const filteredAndSortedInvoices = useMemo(() => {
     let filtered = savedInvoices.filter(invoice => {
       const matchesSearch =
@@ -65,12 +71,6 @@ const InvoiceManager = ({ savedInvoices, savedData, onDeleteInvoice, onViewInvoi
 
     return filtered
   }, [savedInvoices, searchTerm, filterStatus, sortBy, sortOrder])
-
-  const isRecent = (date) => {
-    const thirtyDaysAgo = new Date()
-    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
-    return new Date(date) > thirtyDaysAgo
-  }
 
   const handleDelete = (invoiceId) => {
     if (window.confirm('Are you sure you want to delete this invoice? This action cannot be undone.')) {
