@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react'
-import { Upload, FileText, AlertCircle, CheckCircle, FileSpreadsheet, ArrowUp, CloudUpload } from 'lucide-react'
+import { Upload, FileText, AlertCircle, CheckCircle, FileSpreadsheet, ArrowUp, UploadCloud } from 'lucide-react'
 import Papa from 'papaparse'
 
 const CSVUploader = ({ onUpload }) => {
@@ -139,7 +139,7 @@ const CSVUploader = ({ onUpload }) => {
             </div>
           ) : (
             <div className="space-y-4">
-              <CloudUpload className="w-12 h-12 text-gray-400 mx-auto" />
+              <UploadCloud className="w-12 h-12 text-gray-400 mx-auto" />
               <div>
                 <p className="text-lg font-medium text-gray-900 mb-2">
                   Drop your CSV file here, or click to browse
