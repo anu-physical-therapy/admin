@@ -146,6 +146,7 @@ function App() {
   const renderManageView = () => (
     <InvoiceManager 
       savedInvoices={savedInvoices}
+      savedData={savedData}
       onDeleteInvoice={handleDeleteInvoice}
       onViewInvoice={handleViewInvoice}
     />
