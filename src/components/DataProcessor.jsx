@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Calculator, ArrowLeft, CheckCircle } from 'lucide-react'
+import { Calculator, ArrowLeft, CheckCircle, Database, DollarSign, Hash, Calendar, Mail, Type, BarChart3 } from 'lucide-react'
 
 const DataProcessor = ({ data, onProcess, onBack }) => {
   const [selectedFields, setSelectedFields] = useState([])
@@ -96,14 +96,17 @@ const DataProcessor = ({ data, onProcess, onBack }) => {
         <div className="grid md:grid-cols-2 gap-6">
           {/* Field Selection */}
           <div>
-            <h3 className="text-lg font-medium text-gray-900 mb-4">Available Fields</h3>
+            <h3 className="text-lg font-medium text-gray-900 mb-4 flex items-center">
+              <Database className="w-5 h-5 mr-2" />
+              Available Fields
+            </h3>
             <div className="space-y-2 max-h-96 overflow-y-auto">
               {data.headers.map(header => {
                 const fieldType = getFieldType(header)
                 const isSelected = selectedFields.includes(header)
                 
                 return (
-                  <div 
+                  <div
                     key={header}
                     className={`p-3 rounded-lg border cursor-pointer transition-colors ${
                       isSelected 
@@ -113,11 +116,15 @@ const DataProcessor = ({ data, onProcess, onBack }) => {
                     onClick={() => handleFieldToggle(header)}
                   >
                     <div className="flex items-center justify-between">
-                      <div>
-                        <div className="font-medium text-gray-900">{header}</div>
-                        <div className="text-sm text-gray-500 capitalize">{fieldType}</div>
+                      <div className="flex items-center space-x-2">
+                        {fieldType === 'numeric' ? <Hash className="w-4 h-4 text-blue-500" /> :
+                         fieldType === 'email' ? <Mail className="w-4 h-4 text-green-500" /> :
+                         fieldType === 'date' ? <Calendar className="w-4 h-4 text-purple-500" /> :
+                         <Type className="w-4 h-4 text-gray-500" />}
+                        <span className="font-medium">{header}</span>
+                        <span className="text-xs text-gray-500 capitalize">({fieldType})</span>
                       </div>
-                      {isSelected && <CheckCircle className="w-5 h-5 text-primary-600" />}
+                      {isSelected && <CheckCircle className="w-4 h-4 text-primary-600" />}
                     </div>
                   </div>
                 )
@@ -125,34 +132,57 @@ const DataProcessor = ({ data, onProcess, onBack }) => {
             </div>
           </div>
 
-          {/* Summary Preview */}
+          {/* Summary */}
           <div>
-            <h3 className="text-lg font-medium text-gray-900 mb-4">Summary Preview</h3>
+            <h3 className="text-lg font-medium text-gray-900 mb-4 flex items-center">
+              <BarChart3 className="w-5 h-5 mr-2" />
+              Field Summary
+            </h3>
             {selectedFields.length > 0 ? (
               <div className="space-y-4">
                 {selectedFields.map(field => (
-                  <div key={field} className="p-4 bg-gray-50 rounded-lg">
-                    <h4 className="font-medium text-gray-900 mb-2">{field}</h4>
+                  <div key={field} className="bg-gray-50 rounded-lg p-4">
+                    <h4 className="font-medium text-gray-900 mb-2 flex items-center">
+                      <Hash className="w-4 h-4 mr-2 text-blue-500" />
+                      {field}
+                    </h4>
                     <div className="grid grid-cols-2 gap-2 text-sm">
-                      <div>Sum: <span className="font-medium">${summary[field]?.sum.toFixed(2)}</span></div>
-                      <div>Count: <span className="font-medium">{summary[field]?.count}</span></div>
-                      <div>Average: <span className="font-medium">${summary[field]?.average.toFixed(2)}</span></div>
-                      <div>Range: <span className="font-medium">${summary[field]?.min.toFixed(2)} - ${summary[field]?.max.toFixed(2)}</span></div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Sum:</span>
+                        <span className="font-medium">${summary[field]?.sum?.toFixed(2) || '0.00'}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Count:</span>
+                        <span className="font-medium">{summary[field]?.count || 0}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Average:</span>
+                        <span className="font-medium">${summary[field]?.average?.toFixed(2) || '0.00'}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Range:</span>
+                        <span className="font-medium">${summary[field]?.min?.toFixed(2) || '0.00'} - ${summary[field]?.max?.toFixed(2) || '0.00'}</span>
+                      </div>
                     </div>
                   </div>
                 ))}
                 
-                <div className="p-4 bg-primary-50 border border-primary-200 rounded-lg">
-                  <h4 className="font-medium text-primary-900 mb-2">Total Amount</h4>
-                  <div className="text-2xl font-bold text-primary-900">
-                    ${Object.values(summary).reduce((acc, field) => acc + field.sum, 0).toFixed(2)}
+                <div className="bg-primary-50 border border-primary-200 rounded-lg p-4">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center">
+                      <DollarSign className="w-5 h-5 mr-2 text-primary-600" />
+                      <span className="font-medium text-primary-900">Total Amount:</span>
+                    </div>
+                    <span className="text-xl font-bold text-primary-900">
+                      ${Object.values(summary).reduce((acc, field) => acc + field.sum, 0).toFixed(2)}
+                    </span>
                   </div>
                 </div>
               </div>
             ) : (
-              <div className="p-8 text-center text-gray-500">
-                <Calculator className="w-12 h-12 mx-auto mb-4 text-gray-300" />
-                <p>Select fields to see summary preview</p>
+              <div className="text-center py-8 text-gray-500">
+                <Database className="w-12 h-12 mx-auto mb-4 text-gray-300" />
+                <p>Select fields to see summary</p>
               </div>
             )}
           </div>

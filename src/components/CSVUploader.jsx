@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react'
-import { Upload, FileText, AlertCircle, CheckCircle } from 'lucide-react'
+import { Upload, FileText, AlertCircle, CheckCircle, FileSpreadsheet, ArrowUp, CloudUpload } from 'lucide-react'
 import Papa from 'papaparse'
 
 const CSVUploader = ({ onUpload }) => {
@@ -103,67 +103,69 @@ const CSVUploader = ({ onUpload }) => {
           onDrop={handleDrop}
         >
           {isProcessing ? (
-            <div className="flex flex-col items-center">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600 mb-4"></div>
+            <div className="space-y-4">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto"></div>
               <p className="text-gray-600">Processing CSV file...</p>
             </div>
-          ) : error ? (
-            <div className="flex flex-col items-center">
-              <AlertCircle className="w-12 h-12 text-red-500 mb-4" />
-              <p className="text-red-600 mb-4">{error}</p>
-              <button 
-                onClick={() => fileInputRef.current?.click()}
-                className="btn-primary"
-              >
-                Try Again
-              </button>
-            </div>
           ) : preview ? (
-            <div className="flex flex-col items-center">
-              <CheckCircle className="w-12 h-12 text-green-500 mb-4" />
-              <p className="text-green-600 mb-2">File uploaded successfully!</p>
-              <p className="text-sm text-gray-600 mb-4">
-                {preview.totalRows} rows found with {preview.headers.length} columns
-              </p>
-              
-              <div className="w-full max-w-md">
-                <h4 className="font-medium text-gray-900 mb-2">Preview:</h4>
+            <div className="space-y-4">
+              <CheckCircle className="w-12 h-12 text-green-500 mx-auto" />
+              <div>
+                <h3 className="text-lg font-medium text-gray-900 mb-2">File Uploaded Successfully!</h3>
+                <p className="text-gray-600 mb-4">{preview.totalRows} rows found</p>
                 <div className="bg-gray-50 rounded-lg p-4 text-left">
-                  <div className="text-xs font-mono text-gray-600 mb-2">
-                    Headers: {preview.headers.join(', ')}
-                  </div>
-                  <div className="text-xs font-mono text-gray-800">
-                    Sample data: {preview.sampleData.length} rows loaded
+                  <h4 className="font-medium text-gray-900 mb-2">Preview:</h4>
+                  <div className="text-sm text-gray-600">
+                    <p><strong>Headers:</strong> {preview.headers.join(', ')}</p>
+                    <p><strong>Sample data:</strong> {preview.sampleData.length} rows shown</p>
                   </div>
                 </div>
               </div>
             </div>
+          ) : error ? (
+            <div className="space-y-4">
+              <AlertCircle className="w-12 h-12 text-red-500 mx-auto" />
+              <div>
+                <h3 className="text-lg font-medium text-red-900 mb-2">Upload Error</h3>
+                <p className="text-red-600 mb-4">{error}</p>
+                <button
+                  onClick={() => fileInputRef.current?.click()}
+                  className="btn-primary flex items-center mx-auto space-x-2"
+                >
+                  <FileSpreadsheet className="w-4 h-4" />
+                  <span>Try Again</span>
+                </button>
+              </div>
+            </div>
           ) : (
-            <div className="flex flex-col items-center">
-              <Upload className="w-12 h-12 text-gray-400 mb-4" />
-              <p className="text-gray-600 mb-2">
-                Drag and drop your CSV file here, or
-              </p>
-              <button 
-                onClick={() => fileInputRef.current?.click()}
-                className="btn-primary"
-              >
-                Browse Files
-              </button>
-              <p className="text-sm text-gray-500 mt-2">
-                Supports CSV files exported from Excel
-              </p>
+            <div className="space-y-4">
+              <CloudUpload className="w-12 h-12 text-gray-400 mx-auto" />
+              <div>
+                <p className="text-lg font-medium text-gray-900 mb-2">
+                  Drop your CSV file here, or click to browse
+                </p>
+                <p className="text-gray-600 mb-4">
+                  Supports Excel exports saved as CSV format
+                </p>
+                <button
+                  onClick={() => fileInputRef.current?.click()}
+                  className="btn-primary flex items-center mx-auto space-x-2"
+                >
+                  <FileSpreadsheet className="w-4 h-4" />
+                  <span>Choose File</span>
+                </button>
+              </div>
             </div>
           )}
+          
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept=".csv"
+            onChange={handleFileInputChange}
+            className="hidden"
+          />
         </div>
-
-        <input
-          ref={fileInputRef}
-          type="file"
-          accept=".csv"
-          onChange={handleFileInputChange}
-          className="hidden"
-        />
       </div>
     </div>
   )

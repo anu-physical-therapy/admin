@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { FileText, ArrowLeft, Settings, DollarSign } from 'lucide-react'
+import { FileText, ArrowLeft, Settings, DollarSign, User, Mail, MapPin, Calendar, Hash, Calculator, Receipt } from 'lucide-react'
 import { format } from 'date-fns'
 
 const InvoiceGenerator = ({ data, onGenerate, onBack }) => {
@@ -84,7 +84,8 @@ const InvoiceGenerator = ({ data, onGenerate, onBack }) => {
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center">
+                    <Hash className="w-4 h-4 mr-1" />
                     Invoice Number
                   </label>
                   <input
@@ -95,7 +96,8 @@ const InvoiceGenerator = ({ data, onGenerate, onBack }) => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center">
+                    <Calendar className="w-4 h-4 mr-1" />
                     Invoice Date
                   </label>
                   <input
@@ -108,7 +110,8 @@ const InvoiceGenerator = ({ data, onGenerate, onBack }) => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center">
+                  <Calendar className="w-4 h-4 mr-1" />
                   Due Date
                 </label>
                 <input
@@ -120,7 +123,8 @@ const InvoiceGenerator = ({ data, onGenerate, onBack }) => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center">
+                  <User className="w-4 h-4 mr-1" />
                   Client Name
                 </label>
                 <input
@@ -133,7 +137,8 @@ const InvoiceGenerator = ({ data, onGenerate, onBack }) => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center">
+                  <Mail className="w-4 h-4 mr-1" />
                   Client Email
                 </label>
                 <input
@@ -146,7 +151,8 @@ const InvoiceGenerator = ({ data, onGenerate, onBack }) => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center">
+                  <MapPin className="w-4 h-4 mr-1" />
                   Client Address
                 </label>
                 <textarea
@@ -160,7 +166,8 @@ const InvoiceGenerator = ({ data, onGenerate, onBack }) => {
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center">
+                    <Calculator className="w-4 h-4 mr-1" />
                     Tax Rate (%)
                   </label>
                   <input
@@ -174,7 +181,8 @@ const InvoiceGenerator = ({ data, onGenerate, onBack }) => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center">
+                    <DollarSign className="w-4 h-4 mr-1" />
                     Discount (%)
                   </label>
                   <input
@@ -190,7 +198,8 @@ const InvoiceGenerator = ({ data, onGenerate, onBack }) => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center">
+                  <FileText className="w-4 h-4 mr-1" />
                   Notes
                 </label>
                 <textarea
@@ -207,45 +216,63 @@ const InvoiceGenerator = ({ data, onGenerate, onBack }) => {
           {/* Invoice Preview */}
           <div>
             <h3 className="text-lg font-medium text-gray-900 mb-4 flex items-center">
-              <DollarSign className="w-5 h-5 mr-2" />
+              <Receipt className="w-5 h-5 mr-2" />
               Invoice Summary
             </h3>
             
             <div className="bg-gray-50 rounded-lg p-6">
               <div className="space-y-4">
-                <div className="flex justify-between text-sm">
-                  <span>Subtotal:</span>
+                <div className="flex justify-between text-sm items-center">
+                  <span className="flex items-center">
+                    <Calculator className="w-4 h-4 mr-1 text-gray-500" />
+                    Subtotal:
+                  </span>
                   <span className="font-medium">${calculateSubtotal().toFixed(2)}</span>
                 </div>
                 
                 {invoiceConfig.taxRate > 0 && (
-                  <div className="flex justify-between text-sm">
-                    <span>Tax ({invoiceConfig.taxRate}%):</span>
+                  <div className="flex justify-between text-sm items-center">
+                    <span className="flex items-center">
+                      <Calculator className="w-4 h-4 mr-1 text-red-500" />
+                      Tax ({invoiceConfig.taxRate}%):
+                    </span>
                     <span className="font-medium">${calculateTax().toFixed(2)}</span>
                   </div>
                 )}
                 
                 {invoiceConfig.discount > 0 && (
-                  <div className="flex justify-between text-sm">
-                    <span>Discount ({invoiceConfig.discount}%):</span>
-                    <span className="font-medium">-${calculateDiscount().toFixed(2)}</span>
+                  <div className="flex justify-between text-sm items-center">
+                    <span className="flex items-center">
+                      <DollarSign className="w-4 h-4 mr-1 text-green-500" />
+                      Discount ({invoiceConfig.discount}%):
+                    </span>
+                    <span className="font-medium text-green-600">-${calculateDiscount().toFixed(2)}</span>
                   </div>
                 )}
                 
                 <div className="border-t pt-4">
-                  <div className="flex justify-between text-lg font-semibold">
-                    <span>Total:</span>
-                    <span>${calculateTotal().toFixed(2)}</span>
+                  <div className="flex justify-between text-lg font-semibold items-center">
+                    <span className="flex items-center">
+                      <DollarSign className="w-5 h-5 mr-1 text-primary-600" />
+                      Total:
+                    </span>
+                    <span className="text-primary-600">${calculateTotal().toFixed(2)}</span>
                   </div>
                 </div>
               </div>
 
               <div className="mt-6">
-                <h4 className="font-medium text-gray-900 mb-2">Line Items:</h4>
+                <h4 className="font-medium text-gray-900 mb-2 flex items-center">
+                  <FileText className="w-4 h-4 mr-1" />
+                  Line Items:
+                </h4>
                 <div className="space-y-2">
                   {Object.entries(data.summary).map(([field, summary]) => (
-                    <div key={field} className="flex justify-between text-sm">
-                      <span className="truncate">{field}</span>
+                    <div key={field} className="flex justify-between text-sm items-center">
+                      <span className="truncate flex items-center">
+                        <Hash className="w-3 h-3 mr-1 text-gray-400" />
+                        {field}
+                      </span>
                       <span className="font-medium">${summary.sum.toFixed(2)}</span>
                     </div>
                   ))}

@@ -8,7 +8,7 @@ import InvoiceManager from './components/InvoiceManager'
 import { useLocalStorage } from './hooks/useLocalStorage'
 import { processCSVData } from './utils/csvProcessor'
 import { generateInvoice } from './utils/invoiceGenerator'
-import { FileText, Plus, List } from 'lucide-react'
+import { FileText, Plus, List, Upload, Settings, FileSpreadsheet, Receipt, Eye, ArrowRight } from 'lucide-react'
 
 function App() {
   const [csvData, setCsvData] = useState(null)
@@ -83,14 +83,17 @@ function App() {
         <div className="flex items-center justify-center space-x-4">
           {['upload', 'process', 'generate', 'template'].map((step, index) => (
             <div key={step} className="flex items-center">
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
+              <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium ${
                 activeStep === step 
                   ? 'bg-primary-600 text-white' 
                   : index < ['upload', 'process', 'generate', 'template'].indexOf(activeStep)
                   ? 'bg-green-500 text-white'
                   : 'bg-gray-200 text-gray-600'
               }`}>
-                {index + 1}
+                {step === 'upload' ? <Upload className="w-5 h-5" /> :
+                 step === 'process' ? <Settings className="w-5 h-5" /> :
+                 step === 'generate' ? <FileSpreadsheet className="w-5 h-5" /> :
+                 <Receipt className="w-5 h-5" />}
               </div>
               <span className="ml-2 text-sm font-medium text-gray-600 capitalize">
                 {step === 'upload' ? 'Upload CSV' : 
